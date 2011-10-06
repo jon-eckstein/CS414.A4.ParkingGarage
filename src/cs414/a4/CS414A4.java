@@ -27,7 +27,7 @@ public class CS414A4 {
         
         switch(selectedOption){
             case 1:
-                String ticketId = parkingGarage.createFullfillment();
+                String ticketId = parkingGarage.createEntryEvent();
                 Utilities.printLn("Your ticket Id is: " + ticketId);
                 Utilities.printLn("Please enter. Have a nice day.");
             

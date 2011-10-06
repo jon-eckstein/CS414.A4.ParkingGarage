@@ -4,6 +4,7 @@
  */
 package cs414.a4;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -14,14 +15,14 @@ public class Rate {
     
     private Date startDateTime;
     private Date endDateTime;
-    private double rate;
+    private BigDecimal rate;
     private boolean isFlatRate;
 
-    Rate(Date startDate, Date endDate, double rate, boolean isFlat) {
-        setEndDateTime(endDate);
-        setStartDateTime(startDate);
-        setRate(rate);
-        setIsFlatRate(isFlat);
+    Rate(Date startDateTime, Date endDateTime, BigDecimal rate, boolean isFlatRate) {
+        this.endDateTime = endDateTime;
+        this.startDateTime = startDateTime;
+        this.rate = rate;
+        this.isFlatRate = isFlatRate;        
     }
 
     /**
@@ -55,14 +56,14 @@ public class Rate {
     /**
      * @return the rate
      */
-    public double getRate() {
+    public BigDecimal getRate() {
         return rate;
     }
 
     /**
      * @param rate the rate to set
      */
-    public void setRate(double rate) {
+    public void setRate(BigDecimal rate) {
         this.rate = rate;
     }
 

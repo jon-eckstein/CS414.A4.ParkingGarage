@@ -19,9 +19,16 @@ public class ExitEvent {
     private BalanceOwed balance;
     private Date exitDateTime;    
     private BigDecimal rate;    
-    private boolean isFlatRate;
+    private boolean isFlatRate = false;
     
-        
+    public ExitEvent(EntryEvent entryEvent, Date exitDateTime, BigDecimal rate){
+        this.entryEvent = entryEvent;
+        this.exitDateTime = exitDateTime;
+        this.rate = rate;
+        if(entryEvent == null)
+        isFlatRate = true;
+    }
+    
     
     public BigDecimal getTotal() {       
         if(isFlatRate)

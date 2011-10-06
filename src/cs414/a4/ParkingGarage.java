@@ -12,57 +12,40 @@ import java.util.Date;
  * @author jeckstein
  */
 public class ParkingGarage {
-   private EntryExitManager spotFullfillmentManager;
+   private EntryExitManager entryExitManager;
    private RateManager rateManager;
    private PaymentManager paymentManager;
    private int totalSpots;  
-   private final int DEFAULT_TOTAL_SPOTS = 30;
+   private static final int DEFAULT_TOTAL_SPOTS = 30;
    
-   public ParkingGarage(EntryExitManager sfm, RateManager rm, PaymentManager pm, int numSpots){       
-       spotFullfillmentManager = sfm;
-       rateManager = rm;       
+   public ParkingGarage(EntryExitManager eem, PaymentManager pm, int numSpots){       
+       entryExitManager = eem;
+       rateManager = eem.rateManager;       
        paymentManager = pm;
        totalSpots = numSpots;
    }
    
    public ParkingGarage(){
-       this(new EntryExitManager(), new RateManager(), new PaymentManager(new PaymentGateway()), 30);
+       this(new EntryExitManager(new RateManager()), new PaymentManager(new PaymentGateway()), DEFAULT_TOTAL_SPOTS);
    }
    
-   
-   
-   /*
-   public ParkingGarage()             
-   {
-       this(new SpotFullfillment(), new RateManager());
-   }
-   */
-   
-   public String createFullfillment() throws Exception{
-       int totalFilled = spotFullfillmentManager.getTotalFullfilledSpots();
+   public String createEntryEvent() throws Exception{
+       int totalFilled = entryExitManager.getFilledSpots();
        
         if(totalFilled < totalSpots){
-           SpotFullfillment spot = spotFullfillmentManager.createFullfillment();
-           return spot.getTicketNumber();           
+           EntryEvent spot = entryExitManager.createEntryEvent();
+           return spot.getTicketId();           
        }else{
            throw new Exception("Parking lot is full.");
        }              
    }
 
-   public double processExit(String ticketId, Date exitDateTime) throws Exception{
-       SpotFullfillment spot = spotFullfillmentManager.getSpotFullfillment(ticketId);
-       spot.setExitDateTime(exitDateTime);       
-       double currentRate = rateManager.getRegularRate(spot.getEntryDateTime(), spot.getExitDateTime());
-       spot.setRate(currentRate);
-       double total = spot.getTotal();
-       return total;                  
+   public BigDecimal processExit(String ticketId, Date exitDateTime) throws Exception{
+       ExitEvent exit = entryExitManager.createExitEvent(ticketId, exitDateTime);
+       return exit.getTotal();        
    }
-   
-   public double processFlatRateExit(Date exitDateTime) throws Exception{
-       return rateManager.getFlatRate(exitDateTime);
-   }
-   
-   
+  
+    
    public void processCardPayment(BigDecimal amount, String cardNumber, Date expireDate, String ticketId) throws Exception{       
        paymentManager.createCreditCardPayment(amount, new Date(), cardNumber, expireDate, ticketId);
    }
@@ -71,18 +54,14 @@ public class ParkingGarage {
        paymentManager.createCashPayment(amount, new Date(), ticketId);
    }
    
-   public void setRate(Date startDate, Date endDate, double rate, boolean isFlatRate){       
+   public void setRate(Date startDate, Date endDate, BigDecimal rate, boolean isFlatRate){       
         rateManager.setRate(startDate, endDate, rate, isFlatRate);       
    }
    
-   
-   
     /**
-     * @return the totalAvailableSpots
+     * @return the totalSpots
      */
-    public int getTotalAvailableSpots() {
+    public int getTotalSpots() {
         return totalSpots;
-    }
-    
-    
+    }    
 }

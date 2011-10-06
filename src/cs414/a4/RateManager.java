@@ -4,6 +4,7 @@
  */
 package cs414.a4;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -20,7 +21,7 @@ public class RateManager {
     }
     
     
-    public double getRegularRate(Date entryDateTime, Date exitDateTime) throws Exception {
+    public BigDecimal getRegularRate(Date entryDateTime, Date exitDateTime) throws Exception {
         
         for(Rate rateRecord : rates){
             if(exitDateTime.before(rateRecord.getEndDateTime()) && entryDateTime.after(rateRecord.getStartDateTime())
@@ -31,7 +32,7 @@ public class RateManager {
         throw new Exception("Could not find a rate within specified time period.");
     }
 
-    public double getFlatRate(Date exitDateTime) throws Exception {
+    public BigDecimal getFlatRate(Date exitDateTime) throws Exception {
         
         for(Rate rateRecord : rates){
             if(exitDateTime.before(rateRecord.getEndDateTime()) && exitDateTime.after(rateRecord.getStartDateTime())
@@ -43,7 +44,7 @@ public class RateManager {
         
     }
 
-    public void setRate(Date startDate, Date endDate, double rate, boolean isFlatRate) {
+    public void setRate(Date startDate, Date endDate, BigDecimal rate, boolean isFlatRate) {
         //TODO:need to find a date cross-over.
         Rate newRate = new Rate(startDate, endDate, rate, isFlatRate);
         rates.add(newRate);
