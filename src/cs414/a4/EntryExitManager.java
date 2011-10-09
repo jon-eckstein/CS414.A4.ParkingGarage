@@ -67,6 +67,22 @@ public class EntryExitManager {
             throw new Exception("Invalid ticket number.");                     
     }
     
+    public ExitEvent getExitEvent(String ticketId) throws Exception{
+        for(ExitEvent event : exitEvents)
+            if(event.getTicketId().equals(ticketId))
+                return event;
+        
+        throw new Exception("Could not find exit event.");
+    }
+    
+    public EntryEvent[] getCurrentEntryEvents(){
+        return (EntryEvent[]) openEntries.values().toArray();
+    }
+    
+    public ExitEvent[] getExitEvents(){
+        return (ExitEvent[]) exitEvents.toArray();
+    }
+    
     private BigDecimal getRate(Date entryDate, Date exitDate) throws Exception{
         return rateManager.getRegularRate(entryDate, exitDate);
     }

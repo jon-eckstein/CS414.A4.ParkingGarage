@@ -14,15 +14,13 @@ import java.util.Date;
 public class BalanceOwed {
     private BigDecimal amountOwed;
     private Date dateOwed;
-    private String ticketId;
     private String customerName;
     private String customerAddress;
     private String customerPhoneNumber;
     
-    public BalanceOwed(BigDecimal amountOwed, Date dateOwed, String ticketId, String customerName, String customerAddress, String customerPhoneNumber){
+    public BalanceOwed(BigDecimal amountOwed, Date dateOwed, String customerName, String customerAddress, String customerPhoneNumber){
         this.amountOwed = amountOwed;
-        this.dateOwed = dateOwed;
-        this.ticketId = ticketId;
+        this.dateOwed = dateOwed;        
         this.customerName = customerName;
         this.customerAddress = customerAddress;
         this.customerPhoneNumber = customerPhoneNumber;
@@ -56,20 +54,7 @@ public class BalanceOwed {
         this.dateOwed = dateOwed;
     }
 
-    /**
-     * @return the ticketId
-     */
-    public String getTicketId() {
-        return ticketId;
-    }
-
-    /**
-     * @param ticketId the ticketId to set
-     */
-    public void setTicketId(String ticketId) {
-        this.ticketId = ticketId;
-    }
-
+    
     /**
      * @return the customerName
      */

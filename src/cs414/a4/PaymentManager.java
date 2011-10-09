@@ -14,32 +14,28 @@ import java.util.Date;
  */
 public class PaymentManager {
  
-    ArrayList<Payment> payments;
-    ArrayList<BalanceOwed> balances;
     PaymentGateway paymentGateway;
     
-    public PaymentManager(PaymentGateway pg){        
-        payments = new ArrayList<Payment>();
-        balances = new ArrayList<BalanceOwed>();
+    public PaymentManager(PaymentGateway pg){                
         paymentGateway = pg;
     }
 
-    public void createCreditCardPayment(BigDecimal amount, Date datePaid, String cardNumber, Date expireDate, String ticketId) throws Exception {
+    public CardPayment createCreditCardPayment(BigDecimal amount, Date datePaid, String cardNumber, Date expireDate) throws Exception {
         
         if(paymentGateway.processTransaction(cardNumber,expireDate, amount)){
-            payments.add(new CardPayment(cardNumber, datePaid, expireDate, amount, ticketId));
+            return new CardPayment(cardNumber, datePaid, expireDate, amount);
         }else{
             throw new Exception("Card could not be authorized.");
         }                
     }
 
-    public void createCashPayment(BigDecimal amount, Date datePaid, String ticketId) {
-        payments.add(new CashPayment(amount, ticketId, datePaid));
+    public CashPayment createCashPayment(BigDecimal amount, Date datePaid) {
+        return new CashPayment(amount, datePaid);        
     }
     
     
-    public void createBalanceOwed(BigDecimal amountOwed, Date dateOwed, String ticketId, String customerName, String customerAddress, String customerPhoneNumber){        
-        balances.add(new BalanceOwed(amountOwed, dateOwed, ticketId, customerName, customerAddress, customerPhoneNumber));        
+    public BalanceOwed createBalanceOwed(BigDecimal amountOwed, Date dateOwed, String customerName, String customerAddress, String customerPhoneNumber){        
+         return new BalanceOwed(amountOwed, dateOwed,  customerName, customerAddress, customerPhoneNumber);        
     }
 
     

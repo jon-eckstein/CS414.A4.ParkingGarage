@@ -43,6 +43,13 @@ public class ExitEvent {
         }
     }
     
+    public String getTicketId(){
+        if(entryEvent != null)
+            return entryEvent.getTicketId();
+        else
+            return null;
+    }
+    
     public Date getEntryDate(){        
         if(entryEvent != null)
             return entryEvent.getEntryDate();

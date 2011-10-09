@@ -13,16 +13,9 @@ import java.util.Date;
  */
 public class CashPayment extends Payment {
     
-    public CashPayment(BigDecimal amount, String ticketNum, Date date){        
-        amountPaid = amount;        
-        datePaid = date;
-        
-        if(!Utilities.isNullOrEmpty(ticketNum))
-            ticketId = ticketNum;
+    public CashPayment(BigDecimal amountPaid, Date datePaid){        
+        this.amountPaid = amountPaid;        
+        this.datePaid = datePaid;        
     }
-    
-    public CashPayment(BigDecimal amount, Date date){
-        this(amount,null,date);
-    }
-    
+               
 }

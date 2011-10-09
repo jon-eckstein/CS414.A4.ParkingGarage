@@ -16,7 +16,8 @@ public class ParkingGarage {
    private RateManager rateManager;
    private PaymentManager paymentManager;
    private int totalSpots;  
-   private static final int DEFAULT_TOTAL_SPOTS = 30;
+   private static final int DEFAULT_TOTAL_SPOTS = 100;
+   
    
    public ParkingGarage(EntryExitManager eem, PaymentManager pm, int numSpots){       
        entryExitManager = eem;
@@ -28,6 +29,7 @@ public class ParkingGarage {
    public ParkingGarage(){
        this(new EntryExitManager(new RateManager()), new PaymentManager(new PaymentGateway()), DEFAULT_TOTAL_SPOTS);
    }
+   
    
    public String createEntryEvent() throws Exception{
        int totalFilled = entryExitManager.getFilledSpots();
@@ -47,15 +49,30 @@ public class ParkingGarage {
   
     
    public void processCardPayment(BigDecimal amount, String cardNumber, Date expireDate, String ticketId) throws Exception{       
-       paymentManager.createCreditCardPayment(amount, new Date(), cardNumber, expireDate, ticketId);
+       ExitEvent exitEvent = entryExitManager.getExitEvent(ticketId);
+       Payment payment = paymentManager.createCreditCardPayment(amount, new Date(), cardNumber, expireDate);
+       exitEvent.addPayment(payment);
    }
    
-   public void processCashPayment(BigDecimal amount, String ticketId){
-       paymentManager.createCashPayment(amount, new Date(), ticketId);
+   public void processCashPayment(BigDecimal amount, String ticketId) throws Exception{
+       ExitEvent exitEvent = entryExitManager.getExitEvent(ticketId);
+       Payment payment = paymentManager.createCashPayment(amount, new Date());
+       exitEvent.addPayment(payment);
+   }
+   
+   public void processIou(BigDecimal amount, String customerName, String customerPhone, String customerAddress, String ticketId) throws Exception{
+       ExitEvent exitEvent = entryExitManager.getExitEvent(ticketId);
+       exitEvent.setBalanceOwed(new BalanceOwed(amount, new Date(), customerName, customerAddress, customerPhone));
+       
+       
    }
    
    public void setRate(Date startDate, Date endDate, BigDecimal rate, boolean isFlatRate){       
         rateManager.setRate(startDate, endDate, rate, isFlatRate);       
+   }
+   
+   public int getAvailableSpotCount(){
+       return getTotalSpots() - entryExitManager.getFilledSpots();
    }
    
     /**

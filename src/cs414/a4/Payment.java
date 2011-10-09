@@ -15,7 +15,6 @@ public abstract class Payment {
     
     protected BigDecimal amountPaid;
     protected Date datePaid;
-    protected String ticketId;
 
     /**
      * @return the amountPaid
@@ -44,21 +43,6 @@ public abstract class Payment {
     public void setDatePaid(Date datePaid) {
         this.datePaid = datePaid;
     }
-
-    /**
-     * @return the ticketId
-     */
-    public String getTicketId() {
-        return ticketId;
-    }
-
-    /**
-     * @param ticketId the ticketId to set
-     */
-    public void setTicketId(String ticketId) {
-        this.ticketId = ticketId;
-    }
-    
     
 }
 

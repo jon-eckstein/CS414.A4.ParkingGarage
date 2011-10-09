@@ -16,17 +16,12 @@ public class CardPayment extends Payment {
     private String cardNumber;
     private Date expireDate;
     
-    public CardPayment(String cardNum, Date datePaid, Date dateExpire, BigDecimal amount, String ticket){
-        cardNumber = cardNum;
-        expireDate = dateExpire;
+    public CardPayment(String cardNumber, Date datePaid, Date expireDate, BigDecimal amountPaid){
+        this.cardNumber = cardNumber;
+        this.expireDate = expireDate;
         this.datePaid = datePaid;
-        amount = amountPaid;
-        if(Utilities.isNullOrEmpty(ticket))
-            ticketId = ticket;               
-    }
-    
-    public CardPayment(String cardNum, Date dateExpire, BigDecimal amount, Date datePaid){
-        this(cardNum, datePaid, dateExpire, amount, null);
+        this.amountPaid = amountPaid;
+        
     }
     
     /**

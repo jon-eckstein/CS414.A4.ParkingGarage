@@ -16,7 +16,7 @@ import org.junit.runners.Suite;
  * @author jeckstein
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({cs414.a4.ParkingGarageTest.class, cs414.a4.RateManagerTest.class, cs414.a4.RateTest.class, cs414.a4.CS414A4Test.class, cs414.a4.SpotFullfillmentManagerTest.class, cs414.a4.SpotFullfillmentTest.class})
+@Suite.SuiteClasses({ParkingGarageTest.class, CardPaymentTest.class, UtilitiesTest.class, CS414A4Test.class, EntryEventTest.class, CashPaymentTest.class, PaymentGatewayTest.class, RateTest.class, RateManagerTest.class, EntryExitManagerTest.class, ExitEventTest.class, BalanceOwedTest.class, PaymentTest.class, PaymentManagerTest.class})
 public class A4Suite {
 
     @BeforeClass
