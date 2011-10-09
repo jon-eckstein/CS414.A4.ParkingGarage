@@ -21,9 +21,9 @@ public class ReportManager {
         this.totalSpots = totalSpots;               
     }
     
-    public UsageReportViewModel getUsageReport(Date startDate, Date endDate){
+    public UsageReportViewModel getUsageReport(Date startDate, Date endDate, int delimiter){
         
-        UsageReportViewModel viewModel = new UsageReportViewModel(startDate, endDate);
+        UsageReportViewModel viewModel = new UsageReportViewModel(startDate, endDate, delimiter);
         
         EntryEvent[] currentEntryEvents = entryExitManager.getCurrentEntryEvents();
         ExitEvent[] exitEvents = entryExitManager.getExitEvents();
@@ -32,13 +32,13 @@ public class ReportManager {
         Calendar calEnd = Calendar.getInstance();        
         Calendar entryExitCal = Calendar.getInstance();
         
-        for(calCounter.setTime(startDate), calEnd.setTime(endDate); calCounter.before(calEnd); calCounter.add(Calendar.HOUR, 1)){
-            int hourCounter = 0;                
+        for(calCounter.setTime(startDate), calEnd.setTime(endDate); calCounter.before(calEnd); calCounter.add(delimiter, 1)){
+            int delimeterCounter = 0;                
            
             for(EntryEvent entry : currentEntryEvents){
                 entryExitCal.setTime(entry.getEntryDate());
                 if(entryExitCal.after(calCounter))
-                    hourCounter++;
+                    delimeterCounter++;
             }
             
             for(ExitEvent exit : exitEvents){
@@ -46,34 +46,18 @@ public class ReportManager {
                 Date calCounterDate = calCounter.getTime();
                 if(!(calCounterDate.before(exit.getEntryDate()) 
                         || calCounterDate.after(exit.getExitDate()))){
-                    hourCounter++;
+                    delimeterCounter++;
                 }
             }
             
             UsageReportDetail detail = new UsageReportDetail(calCounter.getTime(), 
-                    calCounter.get(Calendar.HOUR), 
-                    hourCounter, hourCounter / totalSpots); 
+                    calCounter.get(delimiter), 
+                    delimeterCounter, delimeterCounter / (double)totalSpots); 
             
-            viewModel.addDetail(detail);
-           
-            //System.out.println("Current hour..." + calCounter.getTime().toString());
-                        
+            viewModel.addDetail(detail);                                               
         }
-            
-        
-        
-        return viewModel;
-        /*
-        for(EntryEvent ev : currentEntryEvents){
-            if(ev.getEntryDate() >= startDate && ev.getEntryDate() <= endDate){
-                
-            }
-        }
-        */
-        
-        
-        
-        
+                           
+        return viewModel;        
     }
     
 }

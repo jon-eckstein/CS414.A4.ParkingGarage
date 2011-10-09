@@ -6,7 +6,9 @@ package cs414.a4;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -22,7 +24,7 @@ import static org.junit.Assert.*;
 public class ParkingGarageTest {
     
     private ParkingGarage parkingGarage;
-    
+    private SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yy h:mm a");
     
     public ParkingGarageTest() {
     }
@@ -112,112 +114,34 @@ public class ParkingGarageTest {
         BigDecimal result = parkingGarage.processExit("1", exitDateTime);               
         assertEquals(rate.multiply(new BigDecimal(2)), result); 
     }
-    
-    
-    /**
-     * Test of processCardPayment method, of class ParkingGarage.
-     */
-    @Test
-    public void testProcessCardPayment() throws Exception {
-        System.out.println("processCardPayment");
-        BigDecimal amount = null;
-        String cardNumber = "";
-        Date expireDate = null;
-        String ticketId = "";
-        ParkingGarage instance = new ParkingGarage();
-        instance.processCardPayment(amount, cardNumber, expireDate, ticketId);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of processCashPayment method, of class ParkingGarage.
-     */
-    @Test
-    public void testProcessCashPayment() throws Exception {
-        System.out.println("processCashPayment");
-        BigDecimal amount = null;
-        String ticketId = "";
-        ParkingGarage instance = new ParkingGarage();
-        instance.processCashPayment(amount, ticketId);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of processIou method, of class ParkingGarage.
-     */
-    @Test
-    public void testProcessIou() throws Exception {
-        System.out.println("processIou");
-        BigDecimal amount = null;
-        String customerName = "";
-        String customerPhone = "";
-        String customerAddress = "";
-        String ticketId = "";
-        ParkingGarage instance = new ParkingGarage();
-        instance.processIou(amount, customerName, customerPhone, customerAddress, ticketId);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of setRate method, of class ParkingGarage.
-     */
-    @Test
-    public void testSetRate() {
-        System.out.println("setRate");
-        Date startDate = null;
-        Date endDate = null;
-        BigDecimal rate = null;
-        boolean isFlatRate = false;
-        ParkingGarage instance = new ParkingGarage();
-        instance.setRate(startDate, endDate, rate, isFlatRate);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
+       
     /**
      * Test of getAvailableSpotCount method, of class ParkingGarage.
      */
     @Test
-    public void testGetAvailableSpotCount() {
+    public void testGetAvailableSpotCount() throws Exception {
         System.out.println("getAvailableSpotCount");
-        ParkingGarage instance = new ParkingGarage();
-        int expResult = 0;
-        int result = instance.getAvailableSpotCount();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        parkingGarage.createEntryEvent();
+        parkingGarage.createEntryEvent();        
+        int result = parkingGarage.getAvailableSpotCount();    
+        assertEquals(result, parkingGarage.getTotalSpots() - 2);        
     }
 
-    /**
-     * Test of getTotalSpots method, of class ParkingGarage.
-     */
-    @Test
-    public void testGetTotalSpots() {
-        System.out.println("getTotalSpots");
-        ParkingGarage instance = new ParkingGarage();
-        int expResult = 0;
-        int result = instance.getTotalSpots();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
+    
     /**
      * Test of getUsageReport method, of class ParkingGarage.
      */
     @Test
-    public void testGetUsageReport() {
+    public void testGetUsageReport() throws ParseException, Exception {
         System.out.println("getUsageReport");
-        Date startDate = null;
-        Date endDate = null;
-        ParkingGarage instance = new ParkingGarage();
-        UsageReportViewModel expResult = null;
-        UsageReportViewModel result = instance.getUsageReport(startDate, endDate);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        parkingGarage.createEntryEvent(dateFormatter.parse("01/01/2011 12:01 PM"));
+        parkingGarage.createEntryEvent(dateFormatter.parse("01/01/2011 12:02 PM"));        
+        parkingGarage.createEntryEvent(dateFormatter.parse("01/01/2011 12:30 PM"));
+        parkingGarage.createEntryEvent(dateFormatter.parse("01/01/2011 12:31 PM"));        
+                
+        UsageReportViewModel result = parkingGarage.getUsageReport(dateFormatter.parse("01/01/2011 12:00 PM"), dateFormatter.parse("01/01/2011 01:00 PM"),Calendar.HOUR);
+        UsageReportDetail detail = result.getReportDetail().get(0);
+        assertEquals(4,detail.numSpotFilled);
+        
     }
 }

@@ -34,8 +34,8 @@ public class PaymentManager {
     }
     
     
-    public BalanceOwed createBalanceOwed(BigDecimal amountOwed, Date dateOwed, String customerName, String customerAddress, String customerPhoneNumber){        
-         return new BalanceOwed(amountOwed, dateOwed,  customerName, customerAddress, customerPhoneNumber);        
+    public Iou createBalanceOwed(BigDecimal amountOwed, Date dateOwed, String customerName, String customerAddress, String customerPhoneNumber){        
+         return new Iou(amountOwed, dateOwed,  customerName, customerAddress, customerPhoneNumber);        
     }
 
     

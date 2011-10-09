@@ -84,8 +84,8 @@ public class PaymentManagerTest {
         String customerAddress = "";
         String customerPhoneNumber = "";
         PaymentManager instance = null;
-        BalanceOwed expResult = null;
-        BalanceOwed result = instance.createBalanceOwed(amountOwed, dateOwed, customerName, customerAddress, customerPhoneNumber);
+        Iou expResult = null;
+        Iou result = instance.createBalanceOwed(amountOwed, dateOwed, customerName, customerAddress, customerPhoneNumber);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");

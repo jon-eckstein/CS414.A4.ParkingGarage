@@ -11,14 +11,14 @@ import java.util.Date;
  *
  * @author jeckstein
  */
-public class BalanceOwed {
+public class Iou {
     private BigDecimal amountOwed;
     private Date dateOwed;
     private String customerName;
     private String customerAddress;
     private String customerPhoneNumber;
     
-    public BalanceOwed(BigDecimal amountOwed, Date dateOwed, String customerName, String customerAddress, String customerPhoneNumber){
+    public Iou(BigDecimal amountOwed, Date dateOwed, String customerName, String customerAddress, String customerPhoneNumber){
         this.amountOwed = amountOwed;
         this.dateOwed = dateOwed;        
         this.customerName = customerName;

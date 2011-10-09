@@ -15,12 +15,14 @@ public class UsageReportViewModel {
     
     private Date startDate;
     private Date endDate;
+    private int delimiter;
     
     ArrayList<UsageReportDetail> reportDetail = new ArrayList<UsageReportDetail>();
     
-    public UsageReportViewModel(Date startDate, Date endDate){
+    public UsageReportViewModel(Date startDate, Date endDate, int delimiter){
         this.startDate = startDate;
         this.endDate = endDate;
+        this.delimiter = delimiter;
     }
     
     public void addDetail(UsageReportDetail detail){
@@ -59,6 +61,20 @@ public class UsageReportViewModel {
      */
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    /**
+     * @return the delimiter
+     */
+    public int getDelimiter() {
+        return delimiter;
+    }
+
+    /**
+     * @param delimiter the delimiter to set
+     */
+    public void setDelimiter(int delimiter) {
+        this.delimiter = delimiter;
     }
     
     

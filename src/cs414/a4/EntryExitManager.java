@@ -65,6 +65,11 @@ public class EntryExitManager {
         return exit;                
     }
     
+    public ExitEvent createExitEvent(String ticketId) throws Exception{
+        return createExitEvent(ticketId, new Date());
+    }
+    
+           
     public EntryEvent getEntryEvent(String ticketId) throws Exception {
         if(openEntries.containsKey(ticketId))
             return openEntries.get(ticketId);
@@ -85,8 +90,7 @@ public class EntryExitManager {
     }
     
     public ExitEvent[] getExitEvents(){
-        return exitEvents.toArray(new ExitEvent[exitEvents.size()]);
-        //return (ExitEvent[]) exitEvents.toArray();
+        return exitEvents.toArray(new ExitEvent[exitEvents.size()]);       
     }
     
     private BigDecimal getRate(Date entryDate, Date exitDate) throws Exception{

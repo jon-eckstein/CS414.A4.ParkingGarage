@@ -4,7 +4,8 @@
  */
 package cs414.a4;
 
-import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -17,6 +18,8 @@ import static org.junit.Assert.*;
  * @author jeckstein
  */
 public class EntryEventTest {
+    
+    private SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yy h:mm a");
     
     public EntryEventTest() {
     }
@@ -37,31 +40,15 @@ public class EntryEventTest {
     public void tearDown() {
     }
 
-    /**
-     * Test of getTicketId method, of class EntryEvent.
-     */
-    @Test
-    public void testGetTicketId() {
-        System.out.println("getTicketId");
-        EntryEvent instance = null;
-        String expResult = "";
-        String result = instance.getTicketId();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    @Test(expected=IllegalArgumentException.class)
+    public void testCreateEntryWithNullTicketIdShouldFail() throws ParseException{
+        EntryEvent entry = new EntryEvent(null, dateFormatter.parse("12/31/2011 12:31 PM"));        
+        fail("Should have thrown exception");
     }
-
-    /**
-     * Test of getEntryDate method, of class EntryEvent.
-     */
-    @Test
-    public void testGetEntryDate() {
-        System.out.println("getEntryDate");
-        EntryEvent instance = null;
-        Date expResult = null;
-        Date result = instance.getEntryDate();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    
+    @Test(expected=IllegalArgumentException.class)
+    public void testCreateEntryWithNullEntryDateShouldFail() throws ParseException{
+        EntryEvent entry = new EntryEvent("1",null);        
+        fail("Should have thrown exception");
     }
 }

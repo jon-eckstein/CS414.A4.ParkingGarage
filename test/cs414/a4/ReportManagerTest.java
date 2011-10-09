@@ -47,7 +47,7 @@ public class ReportManagerTest {
         Date endDate = null;
         ReportManager instance = null;
         UsageReportViewModel expResult = null;
-        UsageReportViewModel result = instance.getUsageReport(startDate, endDate);
+        UsageReportViewModel result = instance.getUsageReport(startDate, endDate,0);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -63,7 +63,7 @@ public class ReportManagerTest {
         Date endDate = null;
         ReportManager instance = null;
         UsageReportViewModel expResult = null;
-        UsageReportViewModel result = instance.getUsageReport(startDate, endDate);
+        UsageReportViewModel result = instance.getUsageReport(startDate, endDate,0);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");

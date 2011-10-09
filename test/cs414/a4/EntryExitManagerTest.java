@@ -4,6 +4,9 @@
  */
 package cs414.a4;
 
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -21,6 +24,7 @@ public class EntryExitManagerTest {
     
     private EntryExitManager entryExitManager;
     private RateManager rateManager;
+    private SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yy h:mm a"); 
     
     public EntryExitManagerTest() {
         
@@ -45,105 +49,79 @@ public class EntryExitManagerTest {
     public void tearDown() {
     }
 
+    
+    @Test
+    public void testTicketIdShouldBeIncremented(){        
+        String ticketId1 = entryExitManager.createEntryEvent().getTicketId();
+        String ticketId2 = entryExitManager.createEntryEvent().getTicketId();
+        Integer expected = (Integer.parseInt(ticketId1) + 1);
+        assertEquals(expected.toString() , ticketId2);        
+    }
+    
     /**
      * Test of getFilledSpots method, of class EntryExitManager.
      */
     @Test
     public void testGetFilledSpots() {
         System.out.println("getFilledSpots");
-        EntryExitManager instance = entryExitManager;
-        int expResult = 0;
-        int result = instance.getFilledSpots();
-        assertEquals(expResult, result);
-        
-        
+        entryExitManager.createEntryEvent();
+        entryExitManager.createEntryEvent();
+        int expResult = 2;
+        int result = entryExitManager.getFilledSpots();
+        assertEquals(expResult, result);              
     }
-
-    /**
-     * Test of createEntryEvent method, of class EntryExitManager.
-     */
+    
     @Test
-    public void testCreateEntryEvent() {
-        System.out.println("createEntryEvent");
-        EntryExitManager instance = null;
-        EntryEvent expResult = null;
-        EntryEvent result = instance.createEntryEvent();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testGetFilledSpotsWithExitShouldRemoveFilledSpot() throws Exception {
+        System.out.println("testGetFilledSpotsWithExitShouldRemoveFilledSpot");
+        String ticketId1 = entryExitManager.createEntryEvent().getTicketId();
+        String ticketId2 = entryExitManager.createEntryEvent().getTicketId();
+        rateManager.setRate(dateFormatter.parse("01/01/2011 12:00 AM"), dateFormatter.parse("12/31/2020 11:59 PM"), BigDecimal.ZERO, false);
+        entryExitManager.createExitEvent(ticketId2);
+        int expResult = 1;
+        int result = entryExitManager.getFilledSpots();
+        assertEquals(expResult, result);              
     }
-
-    /**
-     * Test of createExitEvent method, of class EntryExitManager.
-     */
-    @Test
-    public void testCreateExitEvent() throws Exception {
-        System.out.println("createExitEvent");
-        String ticketId = "";
-        Date exitDateTime = null;
-        EntryExitManager instance = null;
-        ExitEvent expResult = null;
-        ExitEvent result = instance.createExitEvent(ticketId, exitDateTime);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getEntryEvent method, of class EntryExitManager.
-     */
-    @Test
-    public void testGetEntryEvent() throws Exception {
-        System.out.println("getEntryEvent");
-        String ticketId = "";
-        EntryExitManager instance = null;
-        EntryEvent expResult = null;
-        EntryEvent result = instance.getEntryEvent(ticketId);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getExitEvent method, of class EntryExitManager.
-     */
-    @Test
-    public void testGetExitEvent() throws Exception {
-        System.out.println("getExitEvent");
-        String ticketId = "";
-        EntryExitManager instance = null;
-        ExitEvent expResult = null;
-        ExitEvent result = instance.getExitEvent(ticketId);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
+           
     /**
      * Test of getCurrentEntryEvents method, of class EntryExitManager.
      */
     @Test
     public void testGetCurrentEntryEvents() {
         System.out.println("getCurrentEntryEvents");
-        EntryExitManager instance = null;
-        EntryEvent[] expResult = null;
-        EntryEvent[] result = instance.getCurrentEntryEvents();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        String ticketId1 = entryExitManager.createEntryEvent().getTicketId();
+        String ticketId2 = entryExitManager.createEntryEvent().getTicketId();
+        EntryEvent[] result = entryExitManager.getCurrentEntryEvents();        
+        assertEquals(2, result.length);         
     }
+    
+    @Test
+    public void testEntryShouldBeRemovedIfExitOccurs() throws ParseException, Exception {
+        System.out.println("testEntryShouldBeRemovedIfExitOccurs");
+        EntryEvent entry1 =  entryExitManager.createEntryEvent();
+        String ticketId1 = entry1.getTicketId();
+        String ticketId2 = entryExitManager.createEntryEvent().getTicketId();
+        rateManager.setRate(dateFormatter.parse("01/01/2011 12:00 AM"), dateFormatter.parse("12/31/2020 11:59 PM"), BigDecimal.ZERO, false);
+        entryExitManager.createExitEvent(ticketId2);
+        EntryEvent[] result = entryExitManager.getCurrentEntryEvents();        
+        assertEquals(1, result.length);
+        assertEquals(entry1, result[0]);
+    }
+    
 
     /**
      * Test of getExitEvents method, of class EntryExitManager.
      */
     @Test
-    public void testGetExitEvents() {
-        System.out.println("getExitEvents");
-        EntryExitManager instance = null;
-        ExitEvent[] expResult = null;
-        ExitEvent[] result = instance.getExitEvents();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testGetExitEvents() throws ParseException, Exception {
+       System.out.println("testGetExitEvents");
+        EntryEvent entry1 =  entryExitManager.createEntryEvent();
+        String ticketId1 = entry1.getTicketId();
+        String ticketId2 = entryExitManager.createEntryEvent().getTicketId();
+        rateManager.setRate(dateFormatter.parse("01/01/2011 12:00 AM"), dateFormatter.parse("12/31/2020 11:59 PM"), BigDecimal.ZERO, false);
+        entryExitManager.createExitEvent(ticketId1);
+        entryExitManager.createExitEvent(ticketId2);
+        ExitEvent[] result = entryExitManager.getExitEvents();
+        assertEquals(2, result.length);               
     }
 }

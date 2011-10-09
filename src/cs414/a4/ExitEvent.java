@@ -5,6 +5,8 @@
 package cs414.a4;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -16,11 +18,11 @@ public class ExitEvent {
     
     private EntryEvent entryEvent;
     private ArrayList<Payment> payments;
-    private BalanceOwed balance;
+    private Iou iou;
     private Date exitDateTime;    
     private BigDecimal rate;    
     private boolean isFlatRate = false;
-    private final int  HOURS_IN_MILLI = 1000*60*60;
+    private final double  HOURS_IN_MILLI = 1000*60*60;
     
     public ExitEvent(EntryEvent entryEvent, Date exitDateTime, BigDecimal rate){
         this.entryEvent = entryEvent;
@@ -35,13 +37,11 @@ public class ExitEvent {
         if(isFlatRate)
             return rate;
         else{                
-            long hourDiff =  (exitDateTime.getTime()/HOURS_IN_MILLI) - (getEntryDate().getTime()/HOURS_IN_MILLI);
-            //long hourDiff = (long) (milliDiff * (2.77777778 )* 10e-7);
-            //long hourDiff = (long) (milliDiff / 1000 * 60 * 60);
-            if(hourDiff <= 0)
+            double hourDiff =  (exitDateTime.getTime()/HOURS_IN_MILLI) - (getEntryDate().getTime()/HOURS_IN_MILLI);            
+            if(hourDiff < 1)
                 hourDiff = 1;
             
-            return BigDecimal.valueOf(hourDiff).multiply(rate);
+            return BigDecimal.valueOf(hourDiff).multiply(rate).round(new MathContext(4,RoundingMode.UP));                                       
         }
     }
     
@@ -63,28 +63,49 @@ public class ExitEvent {
         return this.exitDateTime;
     }
     
-    public void addPayment(Payment payment){
+    public void addPayment(Payment payment) throws Exception{
         
         if(totalPaid().add(payment.getAmountPaid()).compareTo(getTotal()) <= 0){
-            payments.add(payment);
+            getPayments().add(payment);
         }else{
-            throw new IllegalArgumentException("Adding this payment will overpay the transaction. Payment not added.");
+            throw new Exception("Adding this payment will overpay the transaction. Payment not added.");
         }               
     }
     
-    public void setBalanceOwed(BalanceOwed owed){
-        balance = owed;
+    public void setIou(Iou owed) throws Exception{
+        if(owed.getAmountOwed().compareTo(getTotal())==0)
+            iou = owed;
+        else
+            throw new Exception("Balance owed does not equal transaction balance.");
     }
     
-    private BigDecimal totalPaid(){
+    /**
+     * @return the balance
+     */
+    public Iou getIou() {
+        return iou;
+    }
+    
+    public BigDecimal totalPaid(){
         BigDecimal value = new BigDecimal(0);
         
-        for(Payment payment : payments){
+        for(Payment payment : getPayments()){
             value = value.add(payment.getAmountPaid());
         }
         
         return value;        
     }
+
+    /**
+     * @return the payments
+     */
+    public ArrayList<Payment> getPayments() {
+        if(payments == null)
+            payments = new ArrayList<Payment>();
+        return payments;
+    }
+
+    
     
     
     

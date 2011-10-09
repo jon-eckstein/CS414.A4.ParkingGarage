@@ -68,7 +68,7 @@ public class ParkingGarage {
    
    public void processIou(BigDecimal amount, String customerName, String customerPhone, String customerAddress, String ticketId) throws Exception{
        ExitEvent exitEvent = entryExitManager.getExitEvent(ticketId);
-       exitEvent.setBalanceOwed(new BalanceOwed(amount, new Date(), customerName, customerAddress, customerPhone));             
+       exitEvent.setIou(new Iou(amount, new Date(), customerName, customerAddress, customerPhone));             
    }
    
    public void setRate(Date startDate, Date endDate, BigDecimal rate, boolean isFlatRate){       
@@ -79,8 +79,8 @@ public class ParkingGarage {
        return getTotalSpots() - entryExitManager.getFilledSpots();
    }
    
-   public UsageReportViewModel getUsageReport(Date startDate, Date endDate){
-       return reportManager.getUsageReport(startDate, endDate);
+   public UsageReportViewModel getUsageReport(Date startDate, Date endDate, int delimeter){
+       return reportManager.getUsageReport(startDate, endDate, delimeter);
    }
    
     /**

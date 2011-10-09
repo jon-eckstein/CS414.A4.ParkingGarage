@@ -6,6 +6,7 @@ package cs414.a4;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -44,10 +45,25 @@ public class RateManager {
         
     }
 
-    public void setRate(Date startDate, Date endDate, BigDecimal rate, boolean isFlatRate) {
-        //TODO:need to find a date cross-over.
+    public void setRate(Date startDate, Date endDate, BigDecimal rate, boolean isFlatRate) throws Exception {
+        //find the cross-over
+        for(Rate existingRate : rates){
+            Date start = existingRate.getStartDateTime();
+            Date end = existingRate.getEndDateTime();
+            if(isWithinRange(existingRate, startDate, endDate) && 
+                   existingRate.getIsFlatRate() == isFlatRate ){
+                throw new Exception("Rate in specified time period already exists.");
+            }
+            
+        }
         Rate newRate = new Rate(startDate, endDate, rate, isFlatRate);
         rates.add(newRate);
     }
+    
+    private boolean isWithinRange(Rate rate, Date newStartDate, Date newEndDate) {
+        return (rate.getStartDateTime().before(newStartDate) && rate.getStartDateTime().after(newStartDate)) ||
+                (rate.getStartDateTime().before(newEndDate) && rate.getEndDateTime().after(newEndDate));
+    }
+
     
 }

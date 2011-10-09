@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -91,12 +92,21 @@ public class CS414A4 {
                     Utilities.printLn("Rate set.");
                     break;
                 case 8:
-                    Utilities.printLn("Please enter the start date(mm/dd/yy), end date(mm/dd/yy):");
+                    Utilities.printLn("Please enter the start date(mm/dd/yy), end date(mm/dd/yy), breakdown(months[MO],days[D],hours[H], minutes[MI]):");
                     String reportLine = in.readLine();
                     String[] reportDetails = reportLine.split(",");
                     Date reportStartDate = dateFormatter.parse(reportDetails[0]);
                     Date reportEndDate = dateFormatter.parse(reportDetails[1]);
-                    printUsageReport(parkingGarage.getUsageReport(reportStartDate, reportEndDate));
+                    int delimeter = 0;
+                    if(reportDetails[3].equals("MO"))                    
+                        delimeter = Calendar.MONTH;
+                    if(reportDetails[3].equals("D"))                    
+                        delimeter = Calendar.DATE;
+                    if(reportDetails[3].equals("H"))                    
+                        delimeter = Calendar.HOUR;
+                    if(reportDetails[3].equals("MI"))                    
+                        delimeter = Calendar.MINUTE;
+                    printUsageReport(parkingGarage.getUsageReport(reportStartDate, reportEndDate, delimeter));
                     break;
                 case 9:
                     Utilities.printLn("Bye!");
@@ -142,11 +152,21 @@ public class CS414A4 {
     
     private static void printUsageReport(UsageReportViewModel viewModel){
         
+        String delimeter="";
+        if(viewModel.getDelimiter() == Calendar.MONTH)
+            delimeter = "Month";
+        if(viewModel.getDelimiter() == Calendar.DATE)
+            delimeter = "Day";
+        if(viewModel.getDelimiter() == Calendar.HOUR)
+            delimeter = "Hour";
+        if(viewModel.getDelimiter() == Calendar.MINUTE)
+            delimeter = " Minute";
+        
         Utilities.printLn("***********************************************");
         Utilities.printLn("Garage Usage Report");
-        Utilities.printLn("Staring:" + viewModel.getStartDate() + ", Ending:" + viewModel.getEndDate() + ".");
+        Utilities.printLn("Staring:" + viewModel.getStartDate() + ", Ending:" + viewModel.getEndDate() + ".");                       
         Utilities.printLn("***********************************************");
-        Utilities.printLn("Date\t\tHour\tSpots Taken\tPercent Filled");
+        Utilities.printLn("Date\t\t" + delimeter + "\tSpots Taken\tPercent Filled");
         for(UsageReportDetail detail : viewModel.getReportDetail()){            
             Utilities.printLn(dateFormatter.format(detail.detailDate) + "\t" + detail.hour + "\t" + detail.numSpotFilled + "\t\t" + detail.percentageOccupied);
         }
