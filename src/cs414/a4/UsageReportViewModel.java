@@ -13,8 +13,15 @@ import java.util.Date;
  */
 public class UsageReportViewModel {
     
+    private Date startDate;
+    private Date endDate;
+    
     ArrayList<UsageReportDetail> reportDetail = new ArrayList<UsageReportDetail>();
     
+    public UsageReportViewModel(Date startDate, Date endDate){
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
     
     public void addDetail(UsageReportDetail detail){
         reportDetail.add(detail);
@@ -24,25 +31,37 @@ public class UsageReportViewModel {
     
     public ArrayList<UsageReportDetail> getReportDetail(){
         return reportDetail;
-    }    
-    
-    public class UsageReportDetail{
-        public final Date detailDate;
-        public final int hour;
-        public final int numSpotFilled;
-        public final double percentageOccupied; 
-                
-        public UsageReportDetail(Date detailDate, int hour, int numSpotFilled, double percentageOccupied){
-            this.detailDate = detailDate;
-            this.hour = hour;
-            this.numSpotFilled = numSpotFilled;
-            this.percentageOccupied = percentageOccupied; 
-        }
-        
-        
-        
-        
     }
+
+    /**
+     * @return the startDate
+     */
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    /**
+     * @param startDate the startDate to set
+     */
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    /**
+     * @return the endDate
+     */
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    /**
+     * @param endDate the endDate to set
+     */
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+    
+    
     
     
 }

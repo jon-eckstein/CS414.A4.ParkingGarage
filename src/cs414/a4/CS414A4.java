@@ -90,6 +90,14 @@ public class CS414A4 {
                     parkingGarage.setRate(startDate, endDate, rate, isFlatRate);
                     Utilities.printLn("Rate set.");
                     break;
+                case 8:
+                    Utilities.printLn("Please enter the start date(mm/dd/yy), end date(mm/dd/yy):");
+                    String reportLine = in.readLine();
+                    String[] reportDetails = reportLine.split(",");
+                    Date reportStartDate = dateFormatter.parse(reportDetails[0]);
+                    Date reportEndDate = dateFormatter.parse(reportDetails[1]);
+                    printUsageReport(parkingGarage.getUsageReport(reportStartDate, reportEndDate));
+                    break;
                 case 9:
                     Utilities.printLn("Bye!");
                     return;
@@ -117,13 +125,12 @@ public class CS414A4 {
             Utilities.printLn("6) Pay total with Cash.");
             Utilities.printLn("7) Administrator Only: Set parking rate.");
             Utilities.printLn("8) Administrator Only: View usage reports.");
-            Utilities.printLn("9) Administrator Only: View revenue reports.");
-            Utilities.printLn("10) Quit.");
+            Utilities.printLn("9) Quit.");
            
             String option = in.readLine();
      
             Integer intOption = Utilities.tryParseInt(option);
-            if(intOption != null && intOption >= 1 && intOption <=10){
+            if(intOption != null && intOption >= 1 && intOption <=9){
                 isSelectionOk = true;
                 return intOption;
             }else{
@@ -131,5 +138,17 @@ public class CS414A4 {
             }
         }
         return null;
-    }     
+    }
+    
+    private static void printUsageReport(UsageReportViewModel viewModel){
+        
+        Utilities.printLn("***********************************************");
+        Utilities.printLn("Garage Usage Report");
+        Utilities.printLn("Staring:" + viewModel.getStartDate() + ", Ending:" + viewModel.getEndDate() + ".");
+        Utilities.printLn("***********************************************");
+        Utilities.printLn("Date\t\tHour\tSpots Taken\tPercent Filled");
+        for(UsageReportDetail detail : viewModel.getReportDetail()){            
+            Utilities.printLn(dateFormatter.format(detail.detailDate) + "\t" + detail.hour + "\t" + detail.numSpotFilled + "\t\t" + detail.percentageOccupied);
+        }
+    }
 }

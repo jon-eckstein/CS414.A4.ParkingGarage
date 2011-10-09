@@ -15,9 +15,9 @@ import static org.junit.Assert.*;
  *
  * @author jeckstein
  */
-public class CS414A4Test {
+public class UsageReportDetailTest {
     
-    public CS414A4Test() {
+    public UsageReportDetailTest() {
     }
 
     @BeforeClass
@@ -36,14 +36,8 @@ public class CS414A4Test {
     public void tearDown() {
     }
 
-    /**
-     * Test of main method, of class CS414A4.
-     */
     @Test
-    public void testMain() throws Exception {
-        System.out.println("main");
-        String[] args = null;
-        CS414A4.main(args);
+    public void testSomeMethod() {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

@@ -105,4 +105,18 @@ public class ExitEventTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
+
+    /**
+     * Test of getExitDate method, of class ExitEvent.
+     */
+    @Test
+    public void testGetExitDate() {
+        System.out.println("getExitDate");
+        ExitEvent instance = null;
+        Date expResult = null;
+        Date result = instance.getExitDate();
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
 }

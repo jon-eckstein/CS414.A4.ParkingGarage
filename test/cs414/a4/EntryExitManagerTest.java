@@ -18,11 +18,17 @@ import static org.junit.Assert.*;
  */
 public class EntryExitManagerTest {
     
+    
+    private EntryExitManager entryExitManager;
+    private RateManager rateManager;
+    
     public EntryExitManagerTest() {
+        
     }
 
     @BeforeClass
     public static void setUpClass() throws Exception {
+        
     }
 
     @AfterClass
@@ -31,6 +37,8 @@ public class EntryExitManagerTest {
     
     @Before
     public void setUp() {
+        rateManager =  new RateManager();
+        entryExitManager = new EntryExitManager(rateManager);
     }
     
     @After
@@ -43,12 +51,12 @@ public class EntryExitManagerTest {
     @Test
     public void testGetFilledSpots() {
         System.out.println("getFilledSpots");
-        EntryExitManager instance = null;
+        EntryExitManager instance = entryExitManager;
         int expResult = 0;
         int result = instance.getFilledSpots();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        
     }
 
     /**
@@ -106,6 +114,34 @@ public class EntryExitManagerTest {
         EntryExitManager instance = null;
         ExitEvent expResult = null;
         ExitEvent result = instance.getExitEvent(ticketId);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of getCurrentEntryEvents method, of class EntryExitManager.
+     */
+    @Test
+    public void testGetCurrentEntryEvents() {
+        System.out.println("getCurrentEntryEvents");
+        EntryExitManager instance = null;
+        EntryEvent[] expResult = null;
+        EntryEvent[] result = instance.getCurrentEntryEvents();
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of getExitEvents method, of class EntryExitManager.
+     */
+    @Test
+    public void testGetExitEvents() {
+        System.out.println("getExitEvents");
+        EntryExitManager instance = null;
+        ExitEvent[] expResult = null;
+        ExitEvent[] result = instance.getExitEvents();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");

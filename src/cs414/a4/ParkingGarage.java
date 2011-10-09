@@ -15,6 +15,7 @@ public class ParkingGarage {
    private EntryExitManager entryExitManager;
    private RateManager rateManager;
    private PaymentManager paymentManager;
+   private ReportManager reportManager;
    private int totalSpots;  
    private static final int DEFAULT_TOTAL_SPOTS = 100;
    
@@ -24,6 +25,7 @@ public class ParkingGarage {
        rateManager = eem.rateManager;       
        paymentManager = pm;
        totalSpots = numSpots;
+       reportManager = new ReportManager(entryExitManager, totalSpots);
    }
    
    public ParkingGarage(){
@@ -31,17 +33,21 @@ public class ParkingGarage {
    }
    
    
-   public String createEntryEvent() throws Exception{
+   public String createEntryEvent(Date entryDate) throws Exception{
        int totalFilled = entryExitManager.getFilledSpots();
        
         if(totalFilled < totalSpots){
-           EntryEvent spot = entryExitManager.createEntryEvent();
+           EntryEvent spot = entryExitManager.createEntryEvent(entryDate);
            return spot.getTicketId();           
        }else{
            throw new Exception("Parking lot is full.");
        }              
    }
 
+   public String createEntryEvent() throws Exception{
+       return createEntryEvent(new Date());
+   }
+   
    public BigDecimal processExit(String ticketId, Date exitDateTime) throws Exception{
        ExitEvent exit = entryExitManager.createExitEvent(ticketId, exitDateTime);
        return exit.getTotal();        
@@ -62,9 +68,7 @@ public class ParkingGarage {
    
    public void processIou(BigDecimal amount, String customerName, String customerPhone, String customerAddress, String ticketId) throws Exception{
        ExitEvent exitEvent = entryExitManager.getExitEvent(ticketId);
-       exitEvent.setBalanceOwed(new BalanceOwed(amount, new Date(), customerName, customerAddress, customerPhone));
-       
-       
+       exitEvent.setBalanceOwed(new BalanceOwed(amount, new Date(), customerName, customerAddress, customerPhone));             
    }
    
    public void setRate(Date startDate, Date endDate, BigDecimal rate, boolean isFlatRate){       
@@ -73,6 +77,10 @@ public class ParkingGarage {
    
    public int getAvailableSpotCount(){
        return getTotalSpots() - entryExitManager.getFilledSpots();
+   }
+   
+   public UsageReportViewModel getUsageReport(Date startDate, Date endDate){
+       return reportManager.getUsageReport(startDate, endDate);
    }
    
     /**

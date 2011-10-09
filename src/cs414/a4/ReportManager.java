@@ -21,26 +21,42 @@ public class ReportManager {
         this.totalSpots = totalSpots;               
     }
     
-    public UsageReportViewModel GetUsageReport(Date startDate, Date endDate){
+    public UsageReportViewModel getUsageReport(Date startDate, Date endDate){
         
-        UsageReportViewModel viewModel = new UsageReportViewModel();
+        UsageReportViewModel viewModel = new UsageReportViewModel(startDate, endDate);
         
         EntryEvent[] currentEntryEvents = entryExitManager.getCurrentEntryEvents();
         ExitEvent[] exitEvents = entryExitManager.getExitEvents();
         
-        Calendar cal=Calendar.getInstance();
+        Calendar calCounter=Calendar.getInstance();
+        Calendar calEnd = Calendar.getInstance();        
         Calendar entryExitCal = Calendar.getInstance();
         
-        for(cal.setTime(startDate); cal.before(endDate); cal.add(Calendar.HOUR, 1)){
+        for(calCounter.setTime(startDate), calEnd.setTime(endDate); calCounter.before(calEnd); calCounter.add(Calendar.HOUR, 1)){
             int hourCounter = 0;                
-            
+           
             for(EntryEvent entry : currentEntryEvents){
                 entryExitCal.setTime(entry.getEntryDate());
-                if(entryExitCal.get(Calendar.HOUR) == cal.get(Calendar.HOUR))
+                if(entryExitCal.after(calCounter))
                     hourCounter++;
             }
             
-            System.out.println("Current hour..." + cal.toString());
+            for(ExitEvent exit : exitEvents){
+                entryExitCal.setTime(exit.getEntryDate());
+                Date calCounterDate = calCounter.getTime();
+                if(!(calCounterDate.before(exit.getEntryDate()) 
+                        || calCounterDate.after(exit.getExitDate()))){
+                    hourCounter++;
+                }
+            }
+            
+            UsageReportDetail detail = new UsageReportDetail(calCounter.getTime(), 
+                    calCounter.get(Calendar.HOUR), 
+                    hourCounter, hourCounter / totalSpots); 
+            
+            viewModel.addDetail(detail);
+           
+            //System.out.println("Current hour..." + calCounter.getTime().toString());
                         
         }
             

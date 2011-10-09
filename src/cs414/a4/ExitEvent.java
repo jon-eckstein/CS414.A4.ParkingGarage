@@ -20,6 +20,7 @@ public class ExitEvent {
     private Date exitDateTime;    
     private BigDecimal rate;    
     private boolean isFlatRate = false;
+    private final int  HOURS_IN_MILLI = 1000*60*60;
     
     public ExitEvent(EntryEvent entryEvent, Date exitDateTime, BigDecimal rate){
         this.entryEvent = entryEvent;
@@ -34,8 +35,9 @@ public class ExitEvent {
         if(isFlatRate)
             return rate;
         else{                
-            long milliDiff =  exitDateTime.getTime() - getEntryDate().getTime();
-            long hourDiff = (long) (milliDiff * (2.77777778 )* 10e-7);
+            long hourDiff =  (exitDateTime.getTime()/HOURS_IN_MILLI) - (getEntryDate().getTime()/HOURS_IN_MILLI);
+            //long hourDiff = (long) (milliDiff * (2.77777778 )* 10e-7);
+            //long hourDiff = (long) (milliDiff / 1000 * 60 * 60);
             if(hourDiff <= 0)
                 hourDiff = 1;
             
@@ -55,6 +57,10 @@ public class ExitEvent {
             return entryEvent.getEntryDate();
         else
             return null;        
+    }
+    
+    public Date getExitDate(){
+        return this.exitDateTime;
     }
     
     public void addPayment(Payment payment){
