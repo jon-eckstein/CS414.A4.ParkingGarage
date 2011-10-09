@@ -17,7 +17,7 @@ public class ParkingGarage {
    private PaymentManager paymentManager;
    private ReportManager reportManager;
    private int totalSpots;  
-   private static final int DEFAULT_TOTAL_SPOTS = 100;
+   public static final int DEFAULT_TOTAL_SPOTS = 100;
    
    
    public ParkingGarage(EntryExitManager eem, PaymentManager pm, int numSpots){       
@@ -71,7 +71,7 @@ public class ParkingGarage {
        exitEvent.setIou(new Iou(amount, new Date(), customerName, customerAddress, customerPhone));             
    }
    
-   public void setRate(Date startDate, Date endDate, BigDecimal rate, boolean isFlatRate){       
+   public void setRate(Date startDate, Date endDate, BigDecimal rate, boolean isFlatRate) throws Exception{       
         rateManager.setRate(startDate, endDate, rate, isFlatRate);       
    }
    

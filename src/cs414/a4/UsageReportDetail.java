@@ -12,13 +12,13 @@ import java.util.Date;
  */
 public class UsageReportDetail{
         public final Date detailDate;
-        public final int hour;
+        public final int delimeter;
         public final int numSpotFilled;
         public final double percentageOccupied; 
                 
-        public UsageReportDetail(Date detailDate, int hour, int numSpotFilled, double percentageOccupied){
+        public UsageReportDetail(Date detailDate, int delim, int numSpotFilled, double percentageOccupied){
             this.detailDate = detailDate;
-            this.hour = hour;
+            this.delimeter = delim;
             this.numSpotFilled = numSpotFilled;
             this.percentageOccupied = percentageOccupied; 
         }

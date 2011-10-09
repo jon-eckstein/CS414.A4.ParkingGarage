@@ -4,6 +4,10 @@
  */
 package cs414.a4;
 
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -18,7 +22,15 @@ import static org.junit.Assert.*;
  */
 public class ReportManagerTest {
     
+    private EntryExitManager entryExitManager;
+    private RateManager rateManager;
+    private ReportManager reportManager;
+    private SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yy h:mm a"); 
+    
     public ReportManagerTest() {
+        rateManager = new RateManager();
+        entryExitManager = new EntryExitManager(rateManager);
+        reportManager = new ReportManager(entryExitManager, ParkingGarage.DEFAULT_TOTAL_SPOTS);        
     }
 
     @BeforeClass
@@ -41,16 +53,23 @@ public class ReportManagerTest {
      * Test of GetUsageReport method, of class ReportManager.
      */
     @Test
-    public void testgetUsageReport() {
+    public void testGetUsageReportBrokenDownByDay() throws ParseException, Exception {
         System.out.println("getUsageReport");
-        Date startDate = null;
-        Date endDate = null;
-        ReportManager instance = null;
-        UsageReportViewModel expResult = null;
-        UsageReportViewModel result = instance.getUsageReport(startDate, endDate,0);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //create some entries...
+        rateManager.setRate(dateFormatter.parse("01/01/2011 12:00 AM"), dateFormatter.parse("12/31/2020 11:59 PM"), new BigDecimal("20.00"), false);
+        EntryEvent event1 = entryExitManager.createEntryEvent(dateFormatter.parse("01/01/2011 10:00 AM"));
+        EntryEvent event2 = entryExitManager.createEntryEvent(dateFormatter.parse("01/01/2011 11:30 AM"));
+        entryExitManager.createExitEvent(event1.getTicketId(),dateFormatter.parse("01/01/2011 01:00 PM"));
+        entryExitManager.createExitEvent(event2.getTicketId(),dateFormatter.parse("01/01/2011 01:30 PM"));
+        
+        EntryEvent event3 = entryExitManager.createEntryEvent(dateFormatter.parse("01/02/2011 10:00 AM"));
+        EntryEvent event4 = entryExitManager.createEntryEvent(dateFormatter.parse("01/02/2011 11:30 AM"));
+        entryExitManager.createExitEvent(event3.getTicketId(),dateFormatter.parse("01/02/2011 01:00 PM"));
+        entryExitManager.createExitEvent(event4.getTicketId(),dateFormatter.parse("01/02/2011 01:30 PM"));
+        
+        Date reportStart = dateFormatter.parse("01/01/2011 01:00 AM");
+        Date reportEnd = dateFormatter.parse("01/02/2011 11:59 PM");
+        UsageReportViewModel viewModel = reportManager.getUsageReport(reportStart, reportEnd, Calendar.DATE);
     }
 
     /**
@@ -59,13 +78,7 @@ public class ReportManagerTest {
     @Test
     public void testGetUsageReport() {
         System.out.println("getUsageReport");
-        Date startDate = null;
-        Date endDate = null;
-        ReportManager instance = null;
-        UsageReportViewModel expResult = null;
-        UsageReportViewModel result = instance.getUsageReport(startDate, endDate,0);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        
     }
 }

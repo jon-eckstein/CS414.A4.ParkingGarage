@@ -44,8 +44,10 @@ public class ReportManager {
             for(ExitEvent exit : exitEvents){
                 entryExitCal.setTime(exit.getEntryDate());
                 Date calCounterDate = calCounter.getTime();
-                if(!(calCounterDate.before(exit.getEntryDate()) 
-                        || calCounterDate.after(exit.getExitDate()))){
+                boolean isWithin = isWithinRange(exit, calCounterDate); 
+                        //(calCounterDate.before(exit.getExitDate()) 
+                        //&& calCounterDate.after(exit.getEntryDate()));
+                if(isWithin){
                     delimeterCounter++;
                 }
             }
@@ -58,6 +60,11 @@ public class ReportManager {
         }
                            
         return viewModel;        
+    }
+    
+    private boolean isWithinRange(ExitEvent exit, Date calDate) {          
+        //return (calDate.before(exit.getExitDate()) && calDate.after(exit.getEntryDate()));
+        return (calDate.compareTo(exit.getExitDate()) <=0 && calDate.compareTo(exit.getEntryDate()) <=0);
     }
     
 }

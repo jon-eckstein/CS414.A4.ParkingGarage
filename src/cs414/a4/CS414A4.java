@@ -168,7 +168,7 @@ public class CS414A4 {
         Utilities.printLn("***********************************************");
         Utilities.printLn("Date\t\t" + delimeter + "\tSpots Taken\tPercent Filled");
         for(UsageReportDetail detail : viewModel.getReportDetail()){            
-            Utilities.printLn(dateFormatter.format(detail.detailDate) + "\t" + detail.hour + "\t" + detail.numSpotFilled + "\t\t" + detail.percentageOccupied);
+            Utilities.printLn(dateFormatter.format(detail.detailDate) + "\t" + detail.delimeter + "\t" + detail.numSpotFilled + "\t\t" + detail.percentageOccupied);
         }
     }
 }
