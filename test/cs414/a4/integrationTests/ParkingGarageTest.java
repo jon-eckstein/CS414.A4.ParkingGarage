@@ -2,8 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cs414.a4;
+package cs414.a4.integrationTests;
 
+import cs414.a4.ParkingGarage;
+import cs414.a4.UsageReportDetail;
+import cs414.a4.UsageReportViewModel;
+import cs414.a4.Utilities;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.ParseException;
@@ -78,6 +82,18 @@ public class ParkingGarageTest {
         fail("Exception should have been thrown.");
     }
     
+    @Test(expected=Exception.class)
+    public void testAttemptingToCreateEntryWhenGarageFullFails() throws Exception {        
+        for(int i=1;i<=parkingGarage.getTotalSpots();i++)
+            parkingGarage.createEntryEvent();
+        
+        //attempt to create one more
+        parkingGarage.createEntryEvent();
+                
+        fail("Exception should have been thrown.");
+    }
+    
+    
     @Test(expected=Exception.class)    
     public void testProcessExitWithoutExistingRate() throws Exception {        
         Utilities.printLn("testProcessExitWithoutExistingRate");
@@ -89,9 +105,7 @@ public class ParkingGarageTest {
     
     @Test  
     public void testProcessExitRegularSingleHourSuccess() throws Exception {        
-        Utilities.printLn("testProcessExitSuccess");
-        
-        //create a new rate...
+                        
         SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yy");
         BigDecimal rate = new BigDecimal("30.00");
         parkingGarage.setRate(dateFormatter.parse("01/01/2011"), dateFormatter.parse("12/31/2011"), rate, false);
@@ -103,9 +117,7 @@ public class ParkingGarageTest {
     
     @Test  
     public void testProcessExitRegularMultipleHourSuccess() throws Exception {        
-        Utilities.printLn("testProcessExitSuccess");
-        
-        //create a new rate...
+                        
         SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yy h:mm a");
         BigDecimal rate = new BigDecimal("30.00");
         parkingGarage.setRate(dateFormatter.parse("01/01/2011 12:00 AM"), dateFormatter.parse("12/31/2011 11:59 PM"), rate, false);

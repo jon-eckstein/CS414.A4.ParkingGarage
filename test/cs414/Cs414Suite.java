@@ -16,7 +16,7 @@ import org.junit.runners.Suite;
  * @author jeckstein
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({cs414.a4.A4Suite.class})
+@Suite.SuiteClasses({cs414.a4.unitTests.A4Suite.class})
 public class Cs414Suite {
 
     @BeforeClass

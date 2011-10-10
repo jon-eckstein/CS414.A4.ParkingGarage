@@ -2,8 +2,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cs414.a4;
+package cs414.a4.integrationTests;
 
+import cs414.a4.EntryEvent;
+import cs414.a4.EntryExitManager;
+import cs414.a4.ParkingGarage;
+import cs414.a4.RateManager;
+import cs414.a4.ReportManager;
+import cs414.a4.UsageReportViewModel;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -70,15 +76,9 @@ public class ReportManagerTest {
         Date reportStart = dateFormatter.parse("01/01/2011 01:00 AM");
         Date reportEnd = dateFormatter.parse("01/02/2011 11:59 PM");
         UsageReportViewModel viewModel = reportManager.getUsageReport(reportStart, reportEnd, Calendar.DATE);
+        
+        assertEquals(2, viewModel.getReportDetail().size());
     }
 
-    /**
-     * Test of getUsageReport method, of class ReportManager.
-     */
-    @Test
-    public void testGetUsageReport() {
-        System.out.println("getUsageReport");
-        
-        
-    }
+    
 }

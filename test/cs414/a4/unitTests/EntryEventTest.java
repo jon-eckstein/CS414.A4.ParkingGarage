@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cs414.a4;
+package cs414.a4.unitTests;
 
+import cs414.a4.EntryEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import org.junit.After;

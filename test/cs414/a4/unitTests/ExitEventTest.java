@@ -2,8 +2,13 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cs414.a4;
+package cs414.a4.unitTests;
 
+import cs414.a4.CashPayment;
+import cs414.a4.EntryEvent;
+import cs414.a4.ExitEvent;
+import cs414.a4.Iou;
+import cs414.a4.Payment;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.ParseException;

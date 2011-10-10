@@ -2,8 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cs414.a4;
+package cs414.a4.integrationTests;
 
+import cs414.a4.EntryEvent;
+import cs414.a4.EntryExitManager;
+import cs414.a4.ExitEvent;
+import cs414.a4.RateManager;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
