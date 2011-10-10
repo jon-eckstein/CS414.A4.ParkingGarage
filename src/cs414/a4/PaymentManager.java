@@ -20,7 +20,7 @@ public class PaymentManager {
         paymentGateway = pg;
     }
 
-    public CardPayment createCreditCardPayment(BigDecimal amount, Date datePaid, String cardNumber, Date expireDate) throws Exception {
+    public CardPayment createCardPayment(BigDecimal amount, Date datePaid, String cardNumber, Date expireDate) throws Exception {
         
         if(paymentGateway.processTransaction(cardNumber,expireDate, amount)){
             return new CardPayment(cardNumber, datePaid, expireDate, amount);
@@ -34,7 +34,7 @@ public class PaymentManager {
     }
     
     
-    public Iou createBalanceOwed(BigDecimal amountOwed, Date dateOwed, String customerName, String customerAddress, String customerPhoneNumber){        
+    public Iou createIou(BigDecimal amountOwed, Date dateOwed, String customerName, String customerAddress, String customerPhoneNumber){        
          return new Iou(amountOwed, dateOwed,  customerName, customerAddress, customerPhoneNumber);        
     }
 

@@ -61,8 +61,11 @@ public class RateManager {
     }
     
     private boolean isWithinRange(Rate rate, Date newStartDate, Date newEndDate) {
+        return (rate.getStartDateTime().after(newStartDate) && rate.getStartDateTime().before(newEndDate))
+                || (rate.getEndDateTime().after(newStartDate) && rate.getEndDateTime().before(newEndDate));
+        /*
         return (rate.getStartDateTime().before(newStartDate) && rate.getStartDateTime().after(newStartDate)) ||
-                (rate.getStartDateTime().before(newEndDate) && rate.getEndDateTime().after(newEndDate));
+                (rate.getStartDateTime().before(newEndDate) && rate.getEndDateTime().after(newEndDate));*/
     }
 
     

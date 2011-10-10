@@ -128,8 +128,7 @@ public class RateManagerTest {
         assertEquals(rate2, result2);
     }
     
-    //TODO: not passing, need to check that...
-    /*
+       
     @Test(expected=Exception.class)
     public void testSetMultipleFlatRatesShouldFailWhenCrossOver() throws ParseException, Exception{
         Date startDate1 = dateFormatter.parse("01/01/2011 12:00 AM");
@@ -147,5 +146,5 @@ public class RateManagerTest {
         rateManager.setRate(startDate2, endDate2, rate2, isFlatRate2);
         
         fail("Test should fail.");
-    }*/
+    }
 }

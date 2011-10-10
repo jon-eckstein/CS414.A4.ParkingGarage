@@ -56,7 +56,7 @@ public class ParkingGarage {
     
    public void processCardPayment(BigDecimal amount, String cardNumber, Date expireDate, String ticketId) throws Exception{       
        ExitEvent exitEvent = entryExitManager.getExitEvent(ticketId);
-       Payment payment = paymentManager.createCreditCardPayment(amount, new Date(), cardNumber, expireDate);
+       Payment payment = paymentManager.createCardPayment(amount, new Date(), cardNumber, expireDate);
        exitEvent.addPayment(payment);
    }
    

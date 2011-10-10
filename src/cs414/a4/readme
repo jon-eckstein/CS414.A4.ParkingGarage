@@ -1,0 +1,8 @@
+A4 Parking Garage Application
+
+To run: 
+main project:
+The main() is located in the CS414A4.java file.
+
+Junit Tests:
+The test suite is located in the A4Suite.java file.

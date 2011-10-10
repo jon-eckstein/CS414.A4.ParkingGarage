@@ -53,30 +53,16 @@ public class CS414A4 {
                     String exitTicketId = in.readLine(); 
                     BigDecimal regularTotal = parkingGarage.processExit(exitTicketId, new Date());
                     Utilities.printLn("Your total is: " + regularTotal.toString());
-                    Utilities.printLn("How would you like to pay this total? Cash [C], Card [CD], or IOU [IOU]");
-                    String payOption = in.readLine();
-                    if(payOption.equals("C")){
-                        parkingGarage.processCashPayment(regularTotal, exitTicketId);
-                    }else if(payOption.equals("CD")){
-                        Utilities.printLn("Please enter card number, expiration date (MM/dd/yyyy):");
-                        String[] cardDetails = in.readLine().split(",");                        
-                        parkingGarage.processCardPayment(regularTotal, cardDetails[0], dateFormatter.parse(cardDetails[1]) , exitTicketId);
-                    }else if(payOption.equals("IOU")){
-                        Utilities.printLn("Please enter customer name, phone number, address:");        
-                        String[] customerDetails = in.readLine().split(",");
-                        parkingGarage.processIou(regularTotal, customerDetails[0], customerDetails[1], customerDetails[2], exitTicketId);
-                    }else{
-                        Utilities.printLn("Invalid option.");        
-                    }
-                    Utilities.printLn("Thank you for your business. Please come again.");        
+                    getCustomerPayment(regularTotal, exitTicketId);
+                    
                     break;
                 case 4:
                     BigDecimal flatTotal = parkingGarage.processExit(null, new Date());
                     Utilities.printLn("Your total is: " + flatTotal.toString());                    
+                    getCustomerPayment(flatTotal, null);
                     break;
-                case 5:
-                    
-                case 7:                    
+                                    
+                case 5:                    
                     boolean isFlatRate = false;
                     Utilities.printLn("Would you like to set a flat rate? Yes [Y], No [N]:");
                     String rateAnswer = in.readLine();
@@ -91,7 +77,7 @@ public class CS414A4 {
                     parkingGarage.setRate(startDate, endDate, rate, isFlatRate);
                     Utilities.printLn("Rate set.");
                     break;
-                case 8:
+                case 6:
                     Utilities.printLn("Please enter the start date(mm/dd/yy), end date(mm/dd/yy), breakdown(months[MO],days[D],hours[H], minutes[MI]):");
                     String reportLine = in.readLine();
                     String[] reportDetails = reportLine.split(",");
@@ -108,7 +94,7 @@ public class CS414A4 {
                         delimeter = Calendar.MINUTE;
                     printUsageReport(parkingGarage.getUsageReport(reportStartDate, reportEndDate, delimeter));
                     break;
-                case 9:
+                case 7:
                     Utilities.printLn("Bye!");
                     return;
             }
@@ -130,17 +116,15 @@ public class CS414A4 {
             Utilities.printLn("1) Show available spot count.");
             Utilities.printLn("2) Get ticket for entry.");
             Utilities.printLn("3) Get exit total.");
-            Utilities.printLn("4) Get exit total for lost or damaged ticket.");            
-            Utilities.printLn("5) Pay total with Credit or Debit Card.");
-            Utilities.printLn("6) Pay total with Cash.");
-            Utilities.printLn("7) Administrator Only: Set parking rate.");
-            Utilities.printLn("8) Administrator Only: View usage reports.");
-            Utilities.printLn("9) Quit.");
+            Utilities.printLn("4) Get exit total for lost or damaged ticket.");                        
+            Utilities.printLn("5) Administrator Only: Set parking rate.");
+            Utilities.printLn("6) Administrator Only: View usage reports.");
+            Utilities.printLn("7) Quit.");
            
             String option = in.readLine();
      
             Integer intOption = Utilities.tryParseInt(option);
-            if(intOption != null && intOption >= 1 && intOption <=9){
+            if(intOption != null && intOption >= 1 && intOption <=7){
                 isSelectionOk = true;
                 return intOption;
             }else{
@@ -148,6 +132,33 @@ public class CS414A4 {
             }
         }
         return null;
+    }
+    
+    
+    private static void getCustomerPayment(BigDecimal total, String ticketId) throws Exception{
+        boolean validOption = false;
+        while(validOption){
+            Utilities.printLn("How would you like to pay this total? Cash [C], Card [CD], or IOU [IOU]");
+            String payOption = in.readLine();
+
+            if(payOption.equals("C")){
+                validOption = true;
+                parkingGarage.processCashPayment(total, ticketId);                
+            }else if(payOption.equals("CD")){
+                validOption = true;
+                Utilities.printLn("Please enter card number, expiration date (MM/dd/yyyy):");
+                String[] cardDetails = in.readLine().split(",");                        
+                parkingGarage.processCardPayment(total, cardDetails[0], dateFormatter.parse(cardDetails[1]) , ticketId);
+            }else if(payOption.equals("IOU")){
+                validOption = true;
+                Utilities.printLn("Please enter customer name, phone number, address:");        
+                String[] customerDetails = in.readLine().split(",");
+                parkingGarage.processIou(total, customerDetails[0], customerDetails[1], customerDetails[2], ticketId);
+            }else{
+                Utilities.printLn("Invalid option.");        
+            }
+        }
+        Utilities.printLn("Thank you for your business. Please come again.");        
     }
     
     private static void printUsageReport(UsageReportViewModel viewModel){
